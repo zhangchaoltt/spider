@@ -35,6 +35,7 @@ indexApp.controller('indexController',['$scope', '$http', function ($scope, $htt
             }
             $scope.pageNum = $scope.pageNum + 1;
             $("a.lightbox").lightBox();
+            
             // 瀑布流
             var browserWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
             if (browserWidth < 500) {
