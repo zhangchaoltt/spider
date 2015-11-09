@@ -4,6 +4,11 @@ indexApp.controller('indexController',['$scope', '$http', function ($scope, $htt
     $scope.category = 'qingxin';
     $scope.pageNum = 0;
     $scope.images = [];
+    $scope.changeCategory = function () {
+        $(".content-set").html('');
+        $scope.pageNum = 0;
+        alert('ss');
+    };
     $scope.loadImages = function () {
 
         console.log($scope.category);
@@ -13,18 +18,39 @@ indexApp.controller('indexController',['$scope', '$http', function ($scope, $htt
             params: {category: $scope.category, pageNum: $scope.pageNum}
         }).success(function (data) {
             for (var i = 0; i < data.length; i++) {
-                $scope.images.push(data[i]);
+                 //$scope.images.push(data[i]);
+                var img = '';
+                img += "<div class='grid''><div class='imgholder'><a class='lightbox' href='"
+                img += data[i].originUrl;
+                img += "'>";
+                img += "<img class='lazy' width='200'";
+                img += "src='static/images/pixel.gif' data-original='";
+                img += data[i].shortUrl;
+                img += "'/></a></div><strong>";
+                img += data[i].title;
+                img += "</strong><div class='meta'><a href='";
+                img += data[i].originUrl;
+                img += "' class='lightbox'>é«˜æ¸…æ— ç åŸå›¾</a></div></div>";
+                $(".content-set").append(img);
             }
             $scope.pageNum = $scope.pageNum + 1;
             $("a.lightbox").lightBox();
-            // Á÷Ê½²¼¾Ö
-            $(".content-set").BlocksIt({
-                numOfCol: 4
-            });
-            // Ê¹Ã¿¸öÍ¼Æ¬¶¼ÀÁ¼ÓÔØ
+            // ç€‘å¸ƒæµ
+            var browserWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            if (browserWidth < 500) {
+                $(".content-set").BlocksIt({
+                    numOfCol: 1
+                });
+            } else if (browserWidth >= 1000) {
+                $(".content-set").BlocksIt({
+                    numOfCol: 4
+                });
+            }
+
+            // å›¾ç‰‡å»¶è¿ŸåŠ è½½
             $("img.lazy").lazyload();
         }).error(function () {
-            console.log('httpÇëÇóÒì³£!');
+            console.log('httpè¯·æ±‚å¤±è´¥!');
         });
     }
     $(window).scroll(function () {
